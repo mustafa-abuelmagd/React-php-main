@@ -1,0 +1,49 @@
+@import "variables";
+html {
+  font-size: 62.5%;
+}
+body {
+  font-family: $fonts;
+  margin: 0;
+}
+
+code {
+  font-family: $fonts;
+}
+*::before,
+*::after,
+* {
+  box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+fieldset,
+p,
+form {
+  box-sizing: border-box;
+  margin: 0;
+  line-height: 2rem;
+  padding: 0;
+}
+
+h1,
+h2,
+h3 {
+  color: $fontColor;
+  line-height: 1;
+}
+a {
+  text-decoration: none;
+}
+
+.App {
+  text-align: center;
+  margin: 2.5rem 5rem;
+}
+hr {
+  border: 0;
+  border-top: 2px solid $fontColor;
+  border-radius: 25px;
+}

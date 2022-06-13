@@ -1,0 +1,5 @@
+@import "functions";
+
+@mixin long-shadow($color) {
+  box-shadow: makeshadow($color);
+}

@@ -1,0 +1,173 @@
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-family: "Robaga Rounded", sans-serif, source-code-pro, Consolas, "Courier New", monospace;
+  margin: 0;
+}
+
+code {
+  font-family: "Robaga Rounded", sans-serif, source-code-pro, Consolas, "Courier New", monospace;
+}
+
+*::before,
+*::after,
+* {
+  box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+fieldset,
+p,
+form {
+  box-sizing: border-box;
+  margin: 0;
+  line-height: 2rem;
+  padding: 0;
+}
+
+h1,
+h2,
+h3 {
+  color: #1d1f22;
+  line-height: 1;
+}
+
+a {
+  text-decoration: none;
+}
+
+.App {
+  text-align: center;
+  margin: 2.5rem 5rem;
+}
+
+hr {
+  border: 0;
+  border-top: 2px solid #1d1f22;
+  border-radius: 25px;
+}
+
+button,
+input[type=submit],
+input[type=reset] {
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+}
+
+.btn-primary, .header button {
+  color: #1d1f22;
+  font-size: 1.5rem;
+  box-shadow: 0px 0px #111214, 1px 1px #111214, 2px 2px #111214, 3px 3px #111214, 4px 4px #111214, 5px 5px #111214;
+  overflow: hidden;
+  background-color: white;
+  padding: 0.3rem 1rem;
+  border: 0.3rem solid #1d1f22;
+  margin: 0 0 0 5rem;
+  transition: all 0.5s ease;
+  line-height: 3rem;
+}
+.btn-primary:hover, .header button:hover {
+  box-shadow: 0px 0px #979da7, 1px 1px #979da7, 2px 2px #979da7, 3px 3px #979da7, 4px 4px #979da7, 5px 5px #979da7;
+}
+.btn-primary:active, .header button:active {
+  transform: scale(0.9);
+}
+
+.header {
+  display: flex;
+  margin: 3rem 0 1.5rem;
+}
+.header h1 {
+  font-weight: bold;
+  font-size: 4rem;
+}
+.header .add-product-btn,
+.header .save-product-btn {
+  margin-left: auto;
+  margin-right: 0;
+}
+
+form .form-header, form .form-typeAttr {
+  margin-left: 1rem;
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  width: 30rem;
+}
+form .form-header label, form .form-typeAttr label {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: space-between;
+  margin: 0.7rem;
+}
+form .form-header label p, form .form-typeAttr label p {
+  font-size: 1.8rem;
+}
+form .form-header label input, form .form-typeAttr label input {
+  margin-left: auto;
+}
+form .form-typeAttr {
+  margin-top: 4rem;
+}
+form .form-typeAttr__switcher {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 2rem !important;
+}
+form .form-typeAttr label p {
+  font-size: 1.3rem;
+}
+form .form-typeAttr h2 {
+  font-size: 1.5rem;
+  margin-top: 2.5rem;
+}
+
+div.product-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 4rem;
+  margin-top: 4rem;
+}
+div.product-list__card {
+  width: 30rem;
+  flex: none;
+  position: relative;
+  text-align: center;
+  border: 0.15rem solid black;
+  padding: 4rem 2rem;
+}
+div.product-list__card input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2rem;
+  height: 2rem;
+}
+div.product-list__card h2 {
+  margin-block: 0.5rem;
+}
+
+/*# sourceMappingURL=App.css.map */

@@ -1,0 +1,28 @@
+div.product-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 4rem;
+  margin-top: 4rem;
+
+  &__card {
+    width: 30rem;
+    flex: none;
+    position: relative;
+    text-align: center;
+    border: 0.15rem solid black;
+    padding: 4rem 2rem;
+
+    & input {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 2rem;
+      height: 2rem;
+    }
+    & h2 {
+      margin-block: 0.5rem;
+    }
+  }
+}

@@ -1,0 +1,14 @@
+@font-face {
+  font-family: "Robaga Rounded";
+  src: local("Robaga Rounded"),
+    url("styles/Robaga_Rounded_Regular.woff") format("woff");
+  font-style: normal;
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: "Robaga Rounded";
+  src: local("Robaga Rounded"),
+    url("styles/Robaga_Rounded_Bold.woff") format("woff");
+  font-weight: bold;
+}

@@ -1,0 +1,43 @@
+form {
+  & .form-header {
+    margin-left: 1rem;
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+
+    width: 30rem;
+    & label {
+      display: flex;
+      flex-direction: row;
+      align-items: stretch;
+      justify-content: space-between;
+      margin: 0.7rem;
+
+      & p {
+        font-size: 1.8rem;
+      }
+      & input {
+        margin-left: auto;
+      }
+    }
+  }
+  & .form-typeAttr {
+    @extend .form-header;
+    margin-top: 4rem;
+
+    &__switcher {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 2rem !important;
+    }
+    & label {
+      & p {
+        font-size: 1.3rem;
+      }
+    }
+    & h2 {
+      font-size: 1.5rem;
+      margin-top: 2.5rem;
+    }
+  }
+}
