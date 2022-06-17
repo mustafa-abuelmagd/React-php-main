@@ -116,7 +116,9 @@ export class ProductAdd extends Component {
                 };
             });
 
-        console.log("event   ", event.target);
+        let newSKU = `${this.state.name}${this.state.typeValue}${Date.now()}`;
+        this.setState({sku : newSKU})
+        // console.log("event   ", event.target);
 
 
     }

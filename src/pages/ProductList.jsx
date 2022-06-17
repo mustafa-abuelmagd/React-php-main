@@ -13,10 +13,15 @@ export class ProductList extends Component {
         };
 
         this.handleMassDelete = this.handleMassDelete.bind(this);
+        this.getApplicationProducts = this.getApplicationProducts.bind(this);
 
     }
 
     async componentDidMount() {
+        await this.getApplicationProducts();
+    }
+
+    async getApplicationProducts() {
         const response = await fetch('http://localhost:8080/getAllProducts')
         const data = await response.json()
 
@@ -24,7 +29,8 @@ export class ProductList extends Component {
         this.setState({products: data})
     }
 
-    handleMassDelete() {
+
+    async handleMassDelete() {
 
         console.log("received data is ", JSON.stringify(this.state.productsToDelete),)
 
@@ -36,10 +42,10 @@ export class ProductList extends Component {
         })
             .then((data) => {
                 // console.log("received data is ", data,)
-                this.setState({status: 'Delete successful'})
+                this.setState({status: 'Delete successful',})
             });
 
-
+        await this.getApplicationProducts();
     }
 
     render() {
