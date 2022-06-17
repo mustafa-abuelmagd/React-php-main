@@ -10,13 +10,66 @@ export class ProductAdd extends Component {
             price: "",
             typeValue: "",
             typeAttr: [],
+            typeOptionsState: {},
+            typeOptions: [],
             isposted: false,
+            enteredData: {},
+            textFields: {}
+
         };
 
         this.handleHeadingChange = this.handleHeadingChange.bind(this);
         this.handleAttrChange = this.handleAttrChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleTypeSwitching = this.handleTypeSwitching.bind(this);
+    }
+
+
+    async componentDidMount() {
+
+
+        const typeOptions1 = [
+            {label: "", value: ""},
+            // {label: "DVD", value: "dvd"},
+            // {label: "Furniture", value: "furniture"},
+            // {label: "Book", value: "book"},
+        ];
+        const tempTextFields = {};
+        let applicationDataTemp = {};
+        // this.props.applicationData != null
+        if (this.props.applicationData.length == 0) {
+            console.log("this.props   came here")
+
+            const response2 = await fetch('http://localhost:8080/getApplicationData');
+            const data2 = await response2.json()
+            // this.setState({applicationData: data2})
+            applicationDataTemp = data2;
+            // console.log(applicationDataTemp)
+        } else {
+
+            applicationDataTemp = this.props.applicationData;
+            // console.log( "not nulll ",applicationDataTemp)
+
+
+        }
+        applicationDataTemp.map(e => {
+
+            typeOptions1.push(
+                {label: e.type_name.toString(), value: e.id.toString()}
+            );
+
+            e.properties.map(e1 => {
+                this.state.textFields[e1.property] = "";
+                this.setState({textFields: this.state.textFields})
+
+
+            })
+
+        })
+        this.setState({typeOptions: typeOptions1})
+        this.setState({typeOptionsState: this.props.applicationData})
+
+
     }
 
 
@@ -34,6 +87,13 @@ export class ProductAdd extends Component {
         const val = event.target.value;
         const name = event.target.id;
         const typeAttrributes = this.state.typeAttr;
+
+        // console.log("handle property value change  ", val, name, typeAttrributes)
+
+        this.state.textFields[Object.keys(this.state.textFields).find(element => element === name.toString())] = val;
+
+        this.setState({typeOptionsState: this.props.applicationData})
+
 
         typeAttrributes.length > 0 &&
         typeAttrributes.some((item) => item.name === name)
@@ -55,11 +115,35 @@ export class ProductAdd extends Component {
                     typeAttr,
                 };
             });
+
+        console.log("event   ", event.target);
+
+
     }
 
     async handleSubmit(event) {
-        const {name, sku, price, typeAttr} = this.state;
+
         event.preventDefault();
+        const type_id = parseInt(this.state.typeOptions[this.state.typeValue].value);
+        const type_properties = this.state.typeOptionsState[type_id - 1].properties
+        // {console.log("this state typevalue  " ,     this.state.typeValue , this.state.typeOptionsState[   this.state.typeValue > 0 ? this.state.typeValue-1 :this.state.typeValue].properties  )}
+
+        const productProperties = [];
+
+
+        for (const typeProperty of type_properties) {
+
+            productProperties.push({
+                "type_id": type_id,
+                "property_id": typeProperty.id,
+                "value": this.state.textFields[typeProperty.property]
+            })
+
+
+        }
+
+
+        const {name, sku, price, typeAttr} = this.state;
         this.setState({isposted: false});
         if (
             name.length !== 0 &&
@@ -74,40 +158,42 @@ export class ProductAdd extends Component {
                         "SKU": sku,
                         "name": name,
                         "price": price,
-                        "type": 2,
-                        "productProperties": [
-
-
-                            {
-                                "type_id": 2,
-                                "property_id": 1,
-                                "value": 5
-                            }
-                        ]
-                    },
+                        "type": type_id,
+                        "productProperties": productProperties
+                    }
                 ),
                 mode: 'no-cors',
 
             };
 
-            const response = await fetch('http://localhost:8080/addProduct', requestOptions);
-            const data = await response.json();
-            await console.log("post request");
-            this.setState({isposted: true});
+            try {
+                const response = fetch('http://localhost:8080/addProduct', requestOptions)
+                // .then(response => response.json())
+                // .then(data => {
+                //     console.log(data)
+                //     this.setState({isposted: true})  name+type+attr
+                // });
+                const data = await response;
+                 console.log("post request");
+                console.log("post request", data.json());
+                this.setState({isposted: true});
+            } catch (e) {
+                console.log("error happened is ", e)
+            }
+
         }
     }
 
     handleTypeSwitching(e) {
-        this.setState({typeValue: e.target.value, typeAttr: []});
+        this.setState({typeValue: "", typeAttr: [], enteredData: {},});
+        // console.log(this.state.typeValue )
+
+        this.setState({typeValue: e.target.value});
     }
 
     render() {
-        const typeOptions = [
-            {label: "", value: ""},
-            {label: "DVD", value: "dvd"},
-            {label: "Furniture", value: "furniture"},
-            {label: "Book", value: "book"},
-        ];
+        // console.log(" EEEEEEEEEEEEEEEEEE is ", this.state);
+
         return (
             <>
                 {this.state.isposted && <Navigate to="/"/>}
@@ -165,84 +251,109 @@ export class ProductAdd extends Component {
                             <select
                                 id="productType"
                                 value={
-                                    this.state.typeValue.length > 0 ? this.state.typeValue : ""
+                                    this.state.typeValue
                                 }
                                 onChange={this.handleTypeSwitching}
                             >
-                                {typeOptions.map((option, i) => (
+
+
+                                {this.state.typeOptions.map((option, i) => (
                                     <option key={i} id={option.label} value={option.value}>
                                         {option.label}
+                                        {/*{console.log("current option value is :  " , option.value , option.label)}*/}
                                     </option>
                                 ))}
                             </select>
                         </label>
-                        {this.state.typeValue === "" ? (
-                            ""
-                        ) : this.state.typeValue === "dvd" ? (
-                            <>
+
+                        {this.state.typeValue != 0 ? this.state.typeOptionsState[this.state.typeValue > 0 ? this.state.typeValue - 1 : this.state.typeValue].properties.map(e => {
+                            return (
                                 <label>
                                     <p>
-                                        Size: <strong>(MB)</strong>
+                                        {e.property}: <strong>({e.unit})</strong>
                                     </p>
                                     <input
-                                        id="size"
-                                        name="price"
+                                        id={e.property}
+                                        name={e.property}
+                                        value={this.state.textFields[Object.keys(this.state.textFields).find(element => element === e.property.toString())]}
                                         onChange={this.handleAttrChange}
                                     />
+                                    {/*{console.log("looking for an element in the array that is the state object ", e.property.toString(), this.state.textFields[Object.keys(this.state.textFields).find(element => element === e.property.toString())] ) }*/}
+
                                 </label>
-                                <h2>Please provide the DVD size</h2>
-                            </>
-                        ) : this.state.typeValue === "furniture" ? (
-                            <>
-                                <label>
-                                    <p>
-                                        Height:<strong> (CM)</strong>
-                                    </p>
-                                    <input
-                                        id="height"
-                                        name="price"
-                                        onChange={this.handleAttrChange}
-                                    />
-                                </label>
-                                <label>
-                                    <p>
-                                        width:<strong> (CM)</strong>
-                                    </p>
-                                    <input
-                                        id="width"
-                                        name="price"
-                                        onChange={this.handleAttrChange}
-                                    />
-                                </label>
-                                <label>
-                                    <p>
-                                        Length:<strong> (CM)</strong>
-                                    </p>
-                                    <input
-                                        id="lenght"
-                                        name="price"
-                                        onChange={this.handleAttrChange}
-                                    />
-                                </label>
-                                <h2>Please provide the furniture dimentions</h2>
-                            </>
-                        ) : this.state.typeValue === "book" ? (
-                            <>
-                                <label>
-                                    <p>
-                                        Weight:<strong> (KG)</strong>
-                                    </p>
-                                    <input
-                                        id="weight"
-                                        name="price"
-                                        onChange={this.handleAttrChange}
-                                    />
-                                </label>
-                                <h2>Please provide the book weight</h2>
-                            </>
-                        ) : (
-                            ""
-                        )}
+                            )
+                        }) : ""
+
+                        }
+
+                        {/*{this.state.typeValue === "" ? (*/}
+                        {/*    ""*/}
+                        {/*) : this.state.typeValue === "dvd" ? (*/}
+
+                        {/*    <>*/}
+                        {/*        <label>*/}
+                        {/*            <p>*/}
+                        {/*                Size: <strong>(MB)</strong>*/}
+                        {/*            </p>*/}
+                        {/*            <input*/}
+                        {/*                id="size"*/}
+                        {/*                name="price"*/}
+                        {/*                onChange={this.handleAttrChange}*/}
+                        {/*            />*/}
+                        {/*        </label>*/}
+                        {/*        <h2>Please provide the DVD size</h2>*/}
+                        {/*    </>*/}
+                        {/*) : this.state.typeValue === 3 ? (*/}
+                        {/*    <>*/}
+                        {/*        <label>*/}
+                        {/*            <p>*/}
+                        {/*                Height:<strong> (CM)</strong>*/}
+                        {/*            </p>*/}
+                        {/*            <input*/}
+                        {/*                id="height"*/}
+                        {/*                name="price"*/}
+                        {/*                onChange={this.handleAttrChange}*/}
+                        {/*            />*/}
+                        {/*        </label>*/}
+                        {/*        <label>*/}
+                        {/*            <p>*/}
+                        {/*                width:<strong> (CM)</strong>*/}
+                        {/*            </p>*/}
+                        {/*            <input*/}
+                        {/*                id="width"*/}
+                        {/*                name="price"*/}
+                        {/*                onChange={this.handleAttrChange}*/}
+                        {/*            />*/}
+                        {/*        </label>*/}
+                        {/*        <label>*/}
+                        {/*            <p>*/}
+                        {/*                Length:<strong> (CM)</strong>*/}
+                        {/*            </p>*/}
+                        {/*            <input*/}
+                        {/*                id="lenght"*/}
+                        {/*                name="price"*/}
+                        {/*                onChange={this.handleAttrChange}*/}
+                        {/*            />*/}
+                        {/*        </label>*/}
+                        {/*        <h2>Please provide the furniture dimentions</h2>*/}
+                        {/*    </>*/}
+                        {/*) : this.state.typeValue === "book" ? (*/}
+                        {/*    <>*/}
+                        {/*        <label>*/}
+                        {/*            <p>*/}
+                        {/*                Weight:<strong> (KG)</strong>*/}
+                        {/*            </p>*/}
+                        {/*            <input*/}
+                        {/*                id="weight"*/}
+                        {/*                name="price"*/}
+                        {/*                onChange={this.handleAttrChange}*/}
+                        {/*            />*/}
+                        {/*        </label>*/}
+                        {/*        <h2>Please provide the book weight</h2>*/}
+                        {/*    </>*/}
+                        {/*) : (*/}
+                        {/*    ""*/}
+                        {/*)}*/}
                     </div>
                 </form>
             </>

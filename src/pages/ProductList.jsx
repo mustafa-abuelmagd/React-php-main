@@ -9,14 +9,37 @@ export class ProductList extends Component {
         super(props);
         this.state = {
             products: [],
+            productsToDelete: []
         };
+
+        this.handleMassDelete = this.handleMassDelete.bind(this);
+
     }
 
     async componentDidMount() {
         const response = await fetch('http://localhost:8080/getAllProducts')
         const data = await response.json()
+
         console.log("asdf ", this.products)
         this.setState({products: data})
+    }
+
+    handleMassDelete() {
+
+        console.log("received data is ", JSON.stringify(this.state.productsToDelete),)
+
+        fetch('http://localhost:8080/deleteProducts', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(this.state.productsToDelete),
+            mode: 'no-cors',
+        })
+            .then((data) => {
+                // console.log("received data is ", data,)
+                this.setState({status: 'Delete successful'})
+            });
+
+
     }
 
     render() {
@@ -31,14 +54,15 @@ export class ProductList extends Component {
                         <button>ADD</button>
                     </Link>
 
-                    <button className="delete-product-btn">MASS DELETE</button>
+                    <button className="delete-product-btn" onClick={this.handleMassDelete}>MASS DELETE</button>
                 </div>
                 <hr/>
                 <div className="product-list">
                     <HandleErrors>
                         {this.state.products && this.state.products.map(product => {
                             return (
-                                <Card key ={product.id} sku={product.sku} name={product.name} price={product.price} Attributes={product.properties}/>
+                                <Card key={product.id} sku={product.sku} name={product.name} price={product.price}
+                                      Attributes={product.properties} productsToDelete={this.state.productsToDelete}/>
                             );
                         })}
                     </HandleErrors>
