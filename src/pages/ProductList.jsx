@@ -64,10 +64,10 @@ export class ProductList extends Component {
                     </header>
 
                     <Link className="add-product-btn" to="/add-product">
-                        <button>ADD</button>
+                        <button id={"ADD"}>ADD</button>
                     </Link>
 
-                    <button className="delete-product-btn" onClick={this.handleMassDelete}>MASS DELETE</button>
+                    <button id={"MASS DELETE"} className="delete-product-btn" onClick={this.handleMassDelete}>MASS DELETE</button>
                 </div>
                 <hr/>
                 <div className="product-list">
