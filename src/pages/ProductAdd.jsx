@@ -275,7 +275,7 @@ export class ProductAdd extends Component {
                             </select>
                         </label>
                         {console.log("error with updating properties     ", this.state.typeValue, this.state.typeOptionsState[this.state.typeValue > 0 ? this.state.typeValue - 1 : this.state.typeValue])}
-                        {this.state.typeValue != 0 ? this.state.typeOptionsState[this.state.typeValue > 0 ? this.state.typeValue - 1 : this.state.typeValue].properties.map(e => {
+                        {this.state.typeValue !== 0 ? this.state.typeOptionsState[this.state.typeValue > 0 ? this.state.typeValue - 1 : this.state.typeValue].properties.map(e => {
                             return (
                                 <HandleErrors>
                                     <label>

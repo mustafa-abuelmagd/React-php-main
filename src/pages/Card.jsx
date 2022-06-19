@@ -21,7 +21,7 @@ export class Card extends Component {
         this.setState({isChekced : this.state.isChekced})
         // this.state.isChekced ? this.props.productsToDelete.push(this.props.sku) : this.props.productsToDelete.splice(this.props.productsToDelete.indexOf(this.props.sku), 1)
 
-        if( this.state.isChekced == true ){
+        if( this.state.isChekced === true ){
             // console.log(" came here 1", );
             this.props.productsToDelete.push(this.props.sku)
 
