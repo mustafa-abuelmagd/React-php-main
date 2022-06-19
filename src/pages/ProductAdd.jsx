@@ -1,5 +1,7 @@
 import React, {Component} from "react";
 import {Link, Navigate} from "react-router-dom";
+import HandleErrors from "./HandleErrors";
+
 
 export class ProductAdd extends Component {
     constructor(props) {
@@ -38,12 +40,13 @@ export class ProductAdd extends Component {
         let applicationDataTemp = {};
         // this.props.applicationData != null
         if (this.props.applicationData.length == 0) {
-            console.log("this.props   came here")
 
-            const response2 = await fetch('http://localhost:8080/getApplicationData');
+            const response2 = await fetch('https://mostafa.osharif.xyz/getApplicationData');
             const data2 = await response2.json()
             // this.setState({applicationData: data2})
             applicationDataTemp = data2;
+            // console.log("this.props   " , applicationDataTemp)
+
             // console.log(applicationDataTemp)
         } else {
 
@@ -67,7 +70,7 @@ export class ProductAdd extends Component {
 
         })
         this.setState({typeOptions: typeOptions1})
-        this.setState({typeOptionsState: this.props.applicationData})
+        this.setState({typeOptionsState: applicationDataTemp})
 
 
     }
@@ -92,7 +95,7 @@ export class ProductAdd extends Component {
 
         this.state.textFields[Object.keys(this.state.textFields).find(element => element === name.toString())] = val;
 
-        this.setState({typeOptionsState: this.props.applicationData})
+        this.setState({textFields: this.state.textFields})
 
 
         typeAttrributes.length > 0 &&
@@ -117,7 +120,7 @@ export class ProductAdd extends Component {
             });
 
         let newSKU = `${this.state.name}${this.state.typeValue}${Date.now()}`;
-        this.setState({sku : newSKU})
+        this.setState({sku: newSKU})
         // console.log("event   ", event.target);
 
 
@@ -169,14 +172,14 @@ export class ProductAdd extends Component {
             };
 
             try {
-                const response = fetch('http://localhost:8080/addProduct', requestOptions)
+                const response = fetch('https://mostafa.osharif.xyz/addProduct', requestOptions)
                 // .then(response => response.json())
                 // .then(data => {
                 //     console.log(data)
                 //     this.setState({isposted: true})  name+type+attr
                 // });
                 const data = await response;
-                 console.log("post request");
+                console.log("post request");
                 console.log("post request", data.json());
                 this.setState({isposted: true});
             } catch (e) {
@@ -188,9 +191,13 @@ export class ProductAdd extends Component {
 
     handleTypeSwitching(e) {
         this.setState({typeValue: "", typeAttr: [], enteredData: {},});
-        // console.log(this.state.typeValue )
 
-        this.setState({typeValue: e.target.value});
+        this.state.typeValue = e.target.value;
+
+        this.setState({typeValue: this.state.typeValue});
+        console.log(e.target.value, "asdf sdfasd fdf asdf", this.state.typeValue)
+
+
     }
 
     render() {
@@ -267,22 +274,24 @@ export class ProductAdd extends Component {
                                 ))}
                             </select>
                         </label>
-
+                        {console.log("error with updating properties     ", this.state.typeValue, this.state.typeOptionsState[this.state.typeValue > 0 ? this.state.typeValue - 1 : this.state.typeValue])}
                         {this.state.typeValue != 0 ? this.state.typeOptionsState[this.state.typeValue > 0 ? this.state.typeValue - 1 : this.state.typeValue].properties.map(e => {
                             return (
-                                <label>
-                                    <p>
-                                        {e.property}: <strong>({e.unit})</strong>
-                                    </p>
-                                    <input
-                                        id={e.property}
-                                        name={e.property}
-                                        value={this.state.textFields[Object.keys(this.state.textFields).find(element => element === e.property.toString())]}
-                                        onChange={this.handleAttrChange}
-                                    />
-                                    {/*{console.log("looking for an element in the array that is the state object ", e.property.toString(), this.state.textFields[Object.keys(this.state.textFields).find(element => element === e.property.toString())] ) }*/}
+                                <HandleErrors>
+                                    <label>
+                                        <p>
+                                            {e.property}: <strong>({e.unit})</strong>
+                                        </p>
+                                        <input
+                                            id={e.property}
+                                            name={e.property}
+                                            value={this.state.textFields[Object.keys(this.state.textFields).find(element => element === e.property.toString())]}
+                                            onChange={this.handleAttrChange}
+                                        />
+                                        {/*{console.log("looking for an element in the array that is the state object ", e.property.toString(), this.state.textFields[Object.keys(this.state.textFields).find(element => element === e.property.toString())] ) }*/}
 
-                                </label>
+                                    </label>
+                                </HandleErrors>
                             )
                         }) : ""
 

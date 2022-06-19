@@ -18,11 +18,18 @@ export class ProductList extends Component {
     }
 
     async componentDidMount() {
-        await this.getApplicationProducts();
+        // await this.getApplicationProducts();
+        const response = await fetch('https://mostafa.osharif.xyz/getAllProducts' , )
+        const data = await response.json()
+
+        console.log("asdf ", this.products)
+        this.setState({products: data})
+
     }
 
+
     async getApplicationProducts() {
-        const response = await fetch('http://localhost:8080/getAllProducts')
+        const response = await fetch('https://mostafa.osharif.xyz/getAllProducts' , { method : 'GET', mode: 'no-cors'})
         const data = await response.json()
 
         console.log("asdf ", this.products)
@@ -34,7 +41,7 @@ export class ProductList extends Component {
 
         console.log("received data is ", JSON.stringify(this.state.productsToDelete),)
 
-        fetch('http://localhost:8080/deleteProducts', {
+        fetch('https://mostafa.osharif.xyz/deleteProducts', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(this.state.productsToDelete),
