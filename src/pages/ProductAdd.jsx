@@ -31,7 +31,7 @@ export class ProductAdd extends Component {
 
 
         const typeOptions1 = [
-            {label: "", value: ""},
+            // {label: "", value: ""},
             // {label: "DVD", value: "dvd"},
             // {label: "Furniture", value: "furniture"},
             // {label: "Book", value: "book"},
@@ -70,7 +70,8 @@ export class ProductAdd extends Component {
 
         })
         this.setState({typeOptions: typeOptions1})
-        this.setState({typeOptionsState: applicationDataTemp})
+        this.setState({typeOptionsState: applicationDataTemp , typeValue : 1})
+        // this.state.typeValue == 0 ? 1
 
 
     }
@@ -228,6 +229,7 @@ export class ProductAdd extends Component {
                                 name="sku"
                                 type="text"
                                 value={this.state.sku}
+
                                 onChange={this.handleHeadingChange}
                             />
                         </label>
@@ -249,6 +251,9 @@ export class ProductAdd extends Component {
                                 id="price"
                                 name="price"
                                 type="text"
+                                // inputMode={"numeric"}
+                                type="number"
+
                                 value={this.state.price}
                                 onChange={this.handleHeadingChange}
                             />
@@ -260,7 +265,7 @@ export class ProductAdd extends Component {
                             <select
                                 id="productType"
                                 value={
-                                    this.state.typeValue
+                                     this.state.typeValue
                                 }
                                 onChange={this.handleTypeSwitching}
                             >
@@ -275,7 +280,7 @@ export class ProductAdd extends Component {
                             </select>
                         </label>
                         {console.log("error with updating properties     ", this.state.typeValue, this.state.typeOptionsState[this.state.typeValue > 0 ? this.state.typeValue - 1 : this.state.typeValue])}
-                        {this.state.typeValue !== 0 ? this.state.typeOptionsState[this.state.typeValue > 0 ? this.state.typeValue - 1 : this.state.typeValue].properties.map(e => {
+                        {this.state.typeValue != 0 ? this.state.typeOptionsState[this.state.typeValue > 0 ? this.state.typeValue - 1 : this.state.typeValue].properties.map(e => {
                             return (
                                 <HandleErrors>
                                     <label>
@@ -285,6 +290,8 @@ export class ProductAdd extends Component {
                                         <input
                                             id={e.property}
                                             name={e.property}
+                                            type="number"
+
                                             value={this.state.textFields[Object.keys(this.state.textFields).find(element => element === e.property.toString())]}
                                             onChange={this.handleAttrChange}
                                         />
