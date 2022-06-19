@@ -273,7 +273,7 @@ export class ProductAdd extends Component {
 
                                 {this.state.typeOptions.map((option, i) => (
                                     <option key={i} id={option.label} value={option.value}>
-                                        {option.label}
+                                        {` ${option.label} `}
                                         {/*{console.log("current option value is :  " , option.value , option.label)}*/}
                                     </option>
                                 ))}
