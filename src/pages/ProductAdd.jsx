@@ -101,6 +101,8 @@ export class ProductAdd extends Component {
     }
 
     handleAttrChange(event) {
+        event.preventDefault();
+
         const val = event.target.value;
         const name = event.target.id;
         const typeAttrributes = this.state.typeValue;
@@ -226,6 +228,8 @@ export class ProductAdd extends Component {
     }
 
     handleTypeSwitching(e) {
+        e.preventDefault();
+
         this.setState({typeValue: "", typeAttr: [], enteredData: {},});
 
         this.state.typeValue = e.target.value;
@@ -305,7 +309,7 @@ export class ProductAdd extends Component {
                                 value={`${this.state.typeValue}`}
                                 onChange={this.handleTypeSwitching}
                             >
-                                {`${this.state.typeValue}`}
+                                {this.state.typeValue}
 
                                 {/*{Object.keys(this.state.typeOptions)}*/}
                                 {Object.keys(this.state.typeOptions).map((option, i) => (

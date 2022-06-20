@@ -37,7 +37,8 @@ export class ProductList extends Component {
     }
 
 
-    async handleMassDelete() {
+    async handleMassDelete(e) {
+        e.preventDefault();
 
         console.log("received data is ", JSON.stringify(this.state.productsToDelete),)
 
