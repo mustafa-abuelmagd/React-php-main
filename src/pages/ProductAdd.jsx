@@ -228,7 +228,10 @@ export class ProductAdd extends Component {
     }
 
     handleTypeSwitching(e) {
-        e.preventDefault();
+        if(e.target.value == null ){
+            e.preventDefault();
+
+        }
 
         this.setState({typeValue: "", typeAttr: [], enteredData: {},});
 
