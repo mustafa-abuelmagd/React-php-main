@@ -31,13 +31,14 @@ export class ProductAdd extends Component {
 
 
         const typeOptions1 = [
-            // {label: "", value: ""},
+            {label: "", value: ""},
             // {label: "DVD", value: "dvd"},
             // {label: "Furniture", value: "furniture"},
             // {label: "Book", value: "book"},
         ];
         const tempTextFields = {};
         let applicationDataTemp = {};
+        let applicationDataUsed = {};
         // this.props.applicationData != null
         if (this.props.applicationData.length == 0) {
 
@@ -51,15 +52,20 @@ export class ProductAdd extends Component {
         } else {
 
             applicationDataTemp = this.props.applicationData;
-            // console.log( "not nulll ",applicationDataTemp)
 
 
         }
         applicationDataTemp.map(e => {
 
-            typeOptions1.push(
-                {label: e.type_name.toString(), value: e.id.toString()}
-            );
+            // typeOptions1.push(
+            //     // {label: e.type_name.toString(), value: e.id.toString()}
+            //     {label: e.type_name.toString(), value: e.type_name.toString()}
+            // );
+            applicationDataUsed[e.type_name.toString()]  = e;
+
+            typeOptions1[e.type_name.toString()] = {label: e.type_name.toString(), value: e.type_name.toString()}
+
+
 
             e.properties.map(e1 => {
                 this.state.textFields[e1.property] = "";
@@ -70,8 +76,15 @@ export class ProductAdd extends Component {
 
         })
         this.setState({typeOptions: typeOptions1})
-        this.setState({typeOptionsState: applicationDataTemp , typeValue : 1})
+        this.setState({typeOptionsState: applicationDataUsed})
         // this.state.typeValue == 0 ? 1
+        console.log(
+            "not nulll ",
+            // this.state.typeOptionsState  ,
+            // this.state.typeOptions ,
+            // applicationDataUsed,
+            this.state.textFields
+            )
 
 
     }
@@ -90,35 +103,35 @@ export class ProductAdd extends Component {
     handleAttrChange(event) {
         const val = event.target.value;
         const name = event.target.id;
-        const typeAttrributes = this.state.typeAttr;
+        const typeAttrributes = this.state.typeValue;
 
-        // console.log("handle property value change  ", val, name, typeAttrributes)
+        // console.log("handle property value change  ", val, name, typeAttrributes ,   this.state.textFields)
 
         this.state.textFields[Object.keys(this.state.textFields).find(element => element === name.toString())] = val;
 
         this.setState({textFields: this.state.textFields})
 
 
-        typeAttrributes.length > 0 &&
-        typeAttrributes.some((item) => item.name === name)
-            ? this.setState((state) => {
-                const typeAttr = state.typeAttr.map((item) => {
-                    if (item.name === name) {
-                        return {name, val};
-                    } else {
-                        return item;
-                    }
-                });
-                return {
-                    typeAttr,
-                };
-            })
-            : this.setState((state) => {
-                const typeAttr = [...state.typeAttr, {name, val}];
-                return {
-                    typeAttr,
-                };
-            });
+        // typeAttrributes.length > 0 &&
+        // typeAttrributes.some((item) => item.name === name)
+        //     ? this.setState((state) => {
+        //         const typeAttr = state.typeAttr.map((item) => {
+        //             if (item.name === name) {
+        //                 return {name, val};
+        //             } else {
+        //                 return item;
+        //             }
+        //         });
+        //         return {
+        //             typeAttr,
+        //         };
+        //     })
+        //     : this.setState((state) => {
+        //         const typeAttr = [...state.typeAttr, {name, val}];
+        //         return {
+        //             typeAttr,
+        //         };
+        //     });
 
         let newSKU = `${this.state.name}${this.state.typeValue}${Date.now()}`;
         this.setState({sku: newSKU})
@@ -130,22 +143,39 @@ export class ProductAdd extends Component {
     async handleSubmit(event) {
 
         event.preventDefault();
+        // {console.log("this state typevalue  " ,
+        //     this.state.typeValue ,
+        //     // this.state.typeOptionsState[   this.state.typeValue > 0 ? this.state.typeValue-1 :this.state.typeValue].properties ,
+        //     this.state.typeOptionsState[this.state.typeValue].properties
+        //
+        // )}
         const type_id = parseInt(this.state.typeOptions[this.state.typeValue].value);
-        const type_properties = this.state.typeOptionsState[type_id - 1].properties
-        // {console.log("this state typevalue  " ,     this.state.typeValue , this.state.typeOptionsState[   this.state.typeValue > 0 ? this.state.typeValue-1 :this.state.typeValue].properties  )}
+        // const type_properties = this.state.typeOptionsState[type_id - 1].properties
+        const type_properties = this.state.typeOptionsState[this.state.typeValue].properties
+
 
         const productProperties = [];
 
+        let inputFieldsNotEmpty = true;
 
         for (const typeProperty of type_properties) {
 
+            inputFieldsNotEmpty &= this.state.textFields[typeProperty.property].length !== 0
             productProperties.push({
-                "type_id": type_id,
+                "type_id": this.state.typeOptionsState[this.state.typeValue].properties[0]['type_id'],
                 "property_id": typeProperty.id,
                 "value": this.state.textFields[typeProperty.property]
             })
 
-
+            console.log("this state typevalue  ",
+                // this.state.typeValue ,
+                // type_id,
+                this.state.typeOptions[this.state.typeValue],
+                typeProperty.id,
+                "input value  ",   this.state.textFields[typeProperty.property].length !== 0,
+                // this.state.typeOptionsState[   this.state.typeValue > 0 ? this.state.typeValue-1 :this.state.typeValue].properties ,
+                this.state.typeOptionsState[this.state.typeValue].properties[0]['type_id']
+            )
         }
 
 
@@ -155,7 +185,7 @@ export class ProductAdd extends Component {
             name.length !== 0 &&
             sku.length !== 0 &&
             price.length !== 0 &&
-            typeAttr.length !== 0
+            inputFieldsNotEmpty
         ) {
             const requestOptions = {
                 method: 'POST',
@@ -187,6 +217,11 @@ export class ProductAdd extends Component {
                 console.log("error happened is ", e)
             }
 
+        }
+        else {
+            console.log("came here, an error happened" ,    name.length !== 0 &&
+                sku.length !== 0 &&
+                price.length !== 0 )
         }
     }
 
@@ -265,21 +300,22 @@ export class ProductAdd extends Component {
                             <select
                                 id="productType"
                                 value={
-                                     this.state.typeValue
+                                    this.state.typeValue
                                 }
                                 onChange={this.handleTypeSwitching}
                             >
 
 
-                                {this.state.typeOptions.map((option, i) => (
-                                    <option key={i} id={option.label} value={option.value}>
-                                        {` ${option.label} `}
-                                        {/*{console.log("current option value is :  " , option.value , option.label)}*/}
+                                {/*{Object.keys(this.state.typeOptions)}*/}
+                                {Object.keys(this.state.typeOptions).map((option, i) => (
+                                    <option key={i} id={this.state.typeOptions[option].label} value={this.state.typeOptions[option].value}>
+                                        {` ${this.state.typeOptions[option].label} `}
+                                        {/*{console.log("current option valxue is :  " ,  this.state.typeOptions[option])}*/}
                                     </option>
                                 ))}
                             </select>
                         </label>
-                        {console.log("error with updating properties     ", this.state.typeValue, this.state.typeOptionsState[this.state.typeValue > 0 ? this.state.typeValue - 1 : this.state.typeValue])}
+                        {/*{console.log("error with updating properties     ", this.state.typeValue,  this.state.typeOptionsState)}*/}
                         {this.state.typeValue != 0 ? this.state.typeOptionsState[this.state.typeValue > 0 ? this.state.typeValue - 1 : this.state.typeValue].properties.map(e => {
                             return (
                                 <HandleErrors>
