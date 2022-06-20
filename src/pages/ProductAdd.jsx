@@ -299,12 +299,13 @@ export class ProductAdd extends Component {
                             Type Switcher
                             <select
                                 id="productType"
-                                value={
-                                    this.state.typeValue
-                                }
+                                // value={
+                                //     this.state.typeValue
+                                // }
+                                value={`${this.state.typeValue}`}
                                 onChange={this.handleTypeSwitching}
                             >
-
+                                {`${this.state.typeValue}`}
 
                                 {/*{Object.keys(this.state.typeOptions)}*/}
                                 {Object.keys(this.state.typeOptions).map((option, i) => (
