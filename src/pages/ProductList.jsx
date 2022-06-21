@@ -17,7 +17,7 @@ export class ProductList extends Component {
 
     }
 
-    async componentDidMount() {
+    async componentWillMount() {
         // await this.getApplicationProducts();
         const response = await fetch('https://mostafa.osharif.xyz/getAllProducts' , )
         const data = await response.json()
@@ -62,6 +62,7 @@ export class ProductList extends Component {
     render() {
         return (
             <>
+
                 <div className="header">
                     <header>
                         <h1>Product List</h1>

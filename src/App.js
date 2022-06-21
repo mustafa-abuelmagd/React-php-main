@@ -14,7 +14,7 @@ export class App extends Component {
         };
     }
 
-    async componentDidMount() {
+    async componentWillMount() {
         const response = await fetch('http://mostafa.osharif.xyz/getApplicationData' , {mode: 'no-cors',})
         const data = await response.json()
         this.setState({applicationData: data})

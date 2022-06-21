@@ -12,7 +12,7 @@ export class ProductAdd extends Component {
             price: "",
             typeValue: "",
             typeAttr: [],
-            typeOptionsState: {},
+            typeOptionsState: this.props.applicationData,
             typeOptions: [],
             isposted: false,
             enteredData: {},
@@ -20,6 +20,7 @@ export class ProductAdd extends Component {
 
         };
 
+        // this.state.typeOptionsState = this.props.applicationData;
         this.handleHeadingChange = this.handleHeadingChange.bind(this);
         this.handleAttrChange = this.handleAttrChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -27,7 +28,7 @@ export class ProductAdd extends Component {
     }
 
 
-    async componentDidMount() {
+    async componentWillMount() {
 
 
         const typeOptions1 = [
@@ -39,16 +40,14 @@ export class ProductAdd extends Component {
         const tempTextFields = {};
         let applicationDataTemp = {};
         let applicationDataUsed = {};
-        // this.props.applicationData != null
         if (this.props.applicationData.length == 0) {
 
             const response2 = await fetch('https://mostafa.osharif.xyz/getApplicationData');
             const data2 = await response2.json()
             // this.setState({applicationData: data2})
             applicationDataTemp = data2;
-            // console.log("this.props   " , applicationDataTemp)
+            console.log("this.props   " , applicationDataTemp)
 
-            // console.log(applicationDataTemp)
         } else {
 
             applicationDataTemp = this.props.applicationData;
@@ -78,13 +77,13 @@ export class ProductAdd extends Component {
         this.setState({typeOptions: typeOptions1})
         this.setState({typeOptionsState: applicationDataUsed})
         // this.state.typeValue == 0 ? 1
-        console.log(
-            "not nulll ",
-            // this.state.typeOptionsState  ,
-            // this.state.typeOptions ,
-            // applicationDataUsed,
-            this.state.textFields
-            )
+        // console.log(
+        //     "not nulll ",
+        //     // this.state.typeOptionsState  ,
+        //     // this.state.typeOptions ,
+        //     // applicationDataUsed,
+        //     this.state.textFields
+        //     )
 
 
     }
@@ -316,9 +315,8 @@ export class ProductAdd extends Component {
 
                                 {/*{Object.keys(this.state.typeOptions)}*/}
                                 {Object.keys(this.state.typeOptions).map((option, i) => (
-                                    <option key={i} id={this.state.typeOptions[option].label} value={this.state.typeOptions[option].value}>
-                                        {` ${this.state.typeOptions[option].label} `}
-                                        {/*{console.log("current option valxue is :  " ,  this.state.typeOptions[option])}*/}
+                                    <option key={i} id={`#${this.state.typeOptions[option].label}`} value={this.state.typeOptions[option].value}>
+                                        {this.state.typeOptions[option].value}
                                     </option>
                                 ))}
                             </select>
