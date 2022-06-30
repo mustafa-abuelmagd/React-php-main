@@ -11,18 +11,13 @@ export class ProductList extends Component {
             products: [],
             productsToDelete: []
         };
-
         this.handleMassDelete = this.handleMassDelete.bind(this);
         this.getApplicationProducts = this.getApplicationProducts.bind(this);
-
     }
 
     async componentWillMount() {
-        // await this.getApplicationProducts();
         const response = await fetch('https://mostafa.osharif.xyz/getAllProducts' , )
         const data = await response.json()
-
-        console.log("asdf ", this.products)
         this.setState({products: data})
 
     }
@@ -31,8 +26,6 @@ export class ProductList extends Component {
     async getApplicationProducts() {
         const response = await fetch('https://mostafa.osharif.xyz/getAllProducts' , { method : 'GET', mode: 'no-cors'})
         const data = await response.json()
-
-        console.log("asdf ", this.products)
         this.setState({products: data})
     }
 
@@ -40,11 +33,7 @@ export class ProductList extends Component {
     async handleMassDelete(e) {
         if (this.state.products.length == 0 ){
             e.preventDefault();
-
         }
-
-        console.log("received data is ", JSON.stringify(this.state.productsToDelete),)
-
         fetch('https://mostafa.osharif.xyz/deleteProducts', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
@@ -52,7 +41,6 @@ export class ProductList extends Component {
             mode: 'no-cors',
         })
             .then((data) => {
-                // console.log("received data is ", data,)
                 this.setState({status: 'Delete successful',})
             });
 
