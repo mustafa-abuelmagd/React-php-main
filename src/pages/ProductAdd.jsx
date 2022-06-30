@@ -202,7 +202,7 @@ export class ProductAdd extends Component {
                             >
                                 {this.state.typeValue}
                                 {Object.keys(this.state.typeOptions).map((option, i) => (
-                                    <option key={i} id={`#${this.state.typeOptions[option].label}`} value={this.state.typeOptions[option].value}>
+                                    <option key={i} id={`${this.state.typeOptions[option].label}`} value={this.state.typeOptions[option].value}>
                                         {this.state.typeOptions[option].value}
                                     </option>
                                 ))}
@@ -211,7 +211,7 @@ export class ProductAdd extends Component {
                         {this.state.typeValue != 0 ? this.state.typeOptionsState[this.state.typeValue > 0 ? this.state.typeValue - 1 : this.state.typeValue].properties.map(e => {
                             return (
                                 <HandleErrors>
-                                    <label>
+                                    <label key={e.property}>
                                         <p>
                                             {e.property}: <strong>({e.unit})</strong>
                                         </p>

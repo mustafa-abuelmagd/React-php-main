@@ -65,9 +65,9 @@ export class ProductList extends Component {
                 <hr/>
                 <div className="product-list">
                     <HandleErrors>
-                        {this.state.products && this.state.products.map(product => {
+                        {this.state.products && this.state.products.map(product  => {
                             return (
-                                <Card key={product.id} sku={product.sku} name={product.name} price={product.price}
+                                <Card id={product.id} key={product.id} sku={product.sku} name={product.name} price={product.price}
                                       Attributes={product.properties} productsToDelete={this.state.productsToDelete}/>
                             );
                         })}
