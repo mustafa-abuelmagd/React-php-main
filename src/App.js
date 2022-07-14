@@ -15,7 +15,7 @@ export class App extends Component {
     }
 
     async componentWillMount() {
-        const response = await fetch('http://mostafa.osharif.xyz/getApplicationData' , {mode: 'no-cors',})
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_SERVER}/getApplicationData` , {mode: 'no-cors',})
         const data = await response.json()
         this.setState({applicationData: data})
 

@@ -29,7 +29,6 @@ export class ProductAdd extends Component {
 
 
     async componentWillMount() {
-        console.log("asdfasdf" , `${process.env.REACT_APP_BACKEND_SERVER}`);
         const typeOptions1 = [
             {label: "", value: ""},
         ];
