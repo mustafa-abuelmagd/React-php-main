@@ -16,7 +16,7 @@ export class ProductList extends Component {
     }
 
     async componentWillMount() {
-        const response = await fetch('https://mostafa.osharif.xyz/getAllProducts' , )
+        const response = await fetch(process.env.BACKEND_SERVER+'/getAllProducts' , )
         const data = await response.json()
         this.setState({products: data})
 
@@ -24,17 +24,17 @@ export class ProductList extends Component {
 
 
     async getApplicationProducts() {
-        const response = await fetch('https://mostafa.osharif.xyz/getAllProducts' , { method : 'GET', mode: 'no-cors'})
+        const response = await fetch(process.env.BACKEND_SERVER+'/getAllProducts' , { method : 'GET', mode: 'no-cors'})
         const data = await response.json()
         this.setState({products: data})
     }
 
 
     async handleMassDelete(e) {
-        if (this.state.products.length == 0 ){
+        if (this.state.products.length === 0 ){
             e.preventDefault();
         }
-        fetch('https://mostafa.osharif.xyz/deleteProducts', {
+        fetch(process.env.BACKEND_SERVER+'/deleteProducts', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(this.state.productsToDelete),
