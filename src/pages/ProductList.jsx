@@ -16,7 +16,7 @@ export class ProductList extends Component {
     }
 
     async componentWillMount() {
-        const response = await fetch(process.env.BACKEND_SERVER+'/getAllProducts' , )
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_SERVER}/getAllProducts` , )
         const data = await response.json()
         this.setState({products: data})
 
@@ -24,7 +24,7 @@ export class ProductList extends Component {
 
 
     async getApplicationProducts() {
-        const response = await fetch(process.env.BACKEND_SERVER+'/getAllProducts' , { method : 'GET', mode: 'no-cors'})
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_SERVER}/getAllProducts`  , { method : 'GET', mode: 'no-cors'})
         const data = await response.json()
         this.setState({products: data})
     }
@@ -34,7 +34,7 @@ export class ProductList extends Component {
         if (this.state.products.length === 0 ){
             e.preventDefault();
         }
-        fetch(process.env.BACKEND_SERVER+'/deleteProducts', {
+        fetch(`${process.env.REACT_APP_BACKEND_SERVER}/deleteProducts`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(this.state.productsToDelete),
@@ -65,9 +65,9 @@ export class ProductList extends Component {
                 <hr/>
                 <div className="product-list">
                     <HandleErrors>
-                        {this.state.products && this.state.products.map(product  => {
+                        {this.state.products && this.state.products.map(product => {
                             return (
-                                <Card id={product.id} key={product.id} sku={product.sku} name={product.name} price={product.price}
+                                <Card key={product.id} sku={product.sku} name={product.name} price={product.price}
                                       Attributes={product.properties} productsToDelete={this.state.productsToDelete}/>
                             );
                         })}

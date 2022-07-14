@@ -29,13 +29,14 @@ export class ProductAdd extends Component {
 
 
     async componentWillMount() {
+        console.log("asdfasdf" , `${process.env.REACT_APP_BACKEND_SERVER}`);
         const typeOptions1 = [
             {label: "", value: ""},
         ];
         let applicationDataTemp = {};
         let applicationDataUsed = {};
         if (this.props.applicationData.length === 0) {
-            const response2 = await fetch('https://mostafa.osharif.xyz/getApplicationData');
+            const response2 = await fetch(`${process.env.REACT_APP_BACKEND_SERVER}/getApplicationData` );
             applicationDataTemp = await response2.json()
         } else {
             applicationDataTemp = this.props.applicationData;
@@ -117,7 +118,7 @@ export class ProductAdd extends Component {
             };
 
             try {
-                const response = fetch(process.env.BACKEND_SERVER+'/addProduct', requestOptions)
+                const response = fetch(`${process.env.REACT_APP_BACKEND_SERVER}/addProduct`, requestOptions)
                 const data = await response;
                 this.setState({isPosted: true});
             } catch (e) {
@@ -198,7 +199,7 @@ export class ProductAdd extends Component {
                             >
                                 {this.state.typeValue}
                                 {Object.keys(this.state.typeOptions).map((option, i) => (
-                                    <option key={i} id={`${this.state.typeOptions[option].label}`} value={this.state.typeOptions[option].value}>
+                                    <option key={i} id={`#${this.state.typeOptions[option].label}`} value={this.state.typeOptions[option].value}>
                                         {this.state.typeOptions[option].value}
                                     </option>
                                 ))}
@@ -207,7 +208,7 @@ export class ProductAdd extends Component {
                         {this.state.typeValue != 0 ? this.state.typeOptionsState[this.state.typeValue > 0 ? this.state.typeValue - 1 : this.state.typeValue].properties.map(e => {
                             return (
                                 <HandleErrors>
-                                    <label key={e.property}>
+                                    <label>
                                         <p>
                                             {e.property}: <strong>({e.unit})</strong>
                                         </p>
