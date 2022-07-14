@@ -2,9 +2,9 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## Deployed App
 
-In the project directory, you can run:
+[https://musical-faun-52426b.netlify.app/](https://musical-faun-52426b.netlify.app/)
 
 ### `npm start`
 
