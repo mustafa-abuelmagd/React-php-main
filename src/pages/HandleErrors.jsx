@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-class HandleEroors extends Component {
+class HandleErrors extends Component {
     constructor(props) {
         super(props);
         this.state = { AnyErrors: false };
@@ -22,4 +22,4 @@ class HandleEroors extends Component {
     }
 }
 
-export default HandleEroors;
+export default HandleErrors;

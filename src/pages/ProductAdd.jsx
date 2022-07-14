@@ -14,7 +14,7 @@ export class ProductAdd extends Component {
             typeAttr: [],
             typeOptionsState: this.props.applicationData,
             typeOptions: [],
-            isposted: false,
+            isPosted: false,
             enteredData: {},
             textFields: {}
 
@@ -34,10 +34,9 @@ export class ProductAdd extends Component {
         ];
         let applicationDataTemp = {};
         let applicationDataUsed = {};
-        if (this.props.applicationData.length == 0) {
+        if (this.props.applicationData.length === 0) {
             const response2 = await fetch('https://mostafa.osharif.xyz/getApplicationData');
-            const data2 = await response2.json()
-            applicationDataTemp = data2;
+            applicationDataTemp = await response2.json()
         } else {
             applicationDataTemp = this.props.applicationData;
         }
@@ -70,7 +69,6 @@ export class ProductAdd extends Component {
 
         const val = event.target.value;
         const name = event.target.id;
-        const typeAttrributes = this.state.typeValue;
         this.state.textFields[Object.keys(this.state.textFields).find(element => element === name.toString())] = val;
 
         this.setState({textFields: this.state.textFields})
@@ -95,8 +93,8 @@ export class ProductAdd extends Component {
         }
 
 
-        const {name, sku, price, typeAttr} = this.state;
-        this.setState({isposted: false});
+        const {name, sku, price} = this.state;
+        this.setState({isPosted: false});
         if (
             name.length !== 0 &&
             sku.length !== 0 &&
@@ -119,9 +117,9 @@ export class ProductAdd extends Component {
             };
 
             try {
-                const response = fetch('https://mostafa.osharif.xyz/addProduct', requestOptions)
+                const response = fetch(process.env.BACKEND_SERVER+'/addProduct', requestOptions)
                 const data = await response;
-                this.setState({isposted: true});
+                this.setState({isPosted: true});
             } catch (e) {
             }
 
@@ -140,7 +138,7 @@ export class ProductAdd extends Component {
     render() {
         return (
             <>
-                {this.state.isposted && <Navigate to="/"/>}
+                {this.state.isPosted && <Navigate to="/"/>}
                 <form id="product_form" onSubmit={this.handleSubmit}>
                     <div className="header">
                         <header>
@@ -184,7 +182,7 @@ export class ProductAdd extends Component {
                             <input
                                 id="price"
                                 name="price"
-                                type="text"
+
                                 type="number"
 
                                 value={this.state.price}
