@@ -122,7 +122,6 @@ export class ProductAdd extends Component {
                 this.setState({isPosted: true});
             } catch (e) {
             }
-
         }
     }
 
@@ -130,7 +129,6 @@ export class ProductAdd extends Component {
         if(e.target.value == null ){
             e.preventDefault();
         }
-
         this.setState({typeValue: "", typeAttr: [], enteredData: {},});
         this.state.typeValue = e.target.value;
         this.setState({typeValue: this.state.typeValue});
